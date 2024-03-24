@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def calculate_mean_bmi(df, age, sex):
     group = df[(df['age'] == age) & (df['gender'] == sex)]
     mean_bmi = group['bmi'].median()
