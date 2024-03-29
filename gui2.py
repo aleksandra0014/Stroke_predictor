@@ -3,7 +3,9 @@ from tkinter import *
 from tkinter import messagebox, filedialog
 from tkinter.ttk import Combobox
 from PIL import Image, ImageTk
-
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+import joblib
 
 background = '#d9d9d9'
 framebg = '#5d9ad8'
@@ -113,6 +115,7 @@ age_entry.place(x=330, y=310)
 avg_g_entry.place(x=330, y=350)
 bmi_entry.place(x=580, y=60)
 
+
 def bmi():
     def calculate_bmi():
         weight = float(m.get())
@@ -141,4 +144,62 @@ bmi_button = Button(detail_entry, image=bmi_button_image, command=bmi, borderwid
 bmi_button.image = bmi_button_image
 bmi_button.place(x=580, y=90)
 
+
+hurra = None
+sorry = None
+
+def predict_stroke():
+    global hurra, sorry
+
+    columns = ['gender', 'age', 'bmi', 'ever_married', 'hypertension', 'heart_disease', 'work_type', 'residence_tye',
+               'smoking',
+               'avg_glucose_level']
+    features = [gender_combobox.get(), age_entry.get(), float(bmi_entry.get()), ever_married.get(), hypertenstion.get(),
+                heart_disease.get(), work_combobox.get(), residence_combobox.get(), smoking_combobox.get(),
+                float(avg_g_entry.get())]
+
+    data = pd.DataFrame([features], columns=columns)
+    data_relevant = data[['age', 'heart_disease', 'avg_glucose_level', 'hypertension', 'ever_married']]
+    col_to_stand = ['age', 'avg_glucose_level']
+    scaler = StandardScaler()
+    data_relevant[col_to_stand] = scaler.fit_transform(data_relevant[col_to_stand])
+    var = data_relevant.values
+    loaded_model = joblib.load('logistic_regression_model.pkl')
+    y_pred_loaded_model = loaded_model.predict(var)
+    if y_pred_loaded_model == 1:
+        if sorry is None:
+            sorry = PhotoImage(file="sorry.png")
+        sorry_background = Label(image=sorry)
+        sorry_background.place(x=920, y=400)
+    elif y_pred_loaded_model == 0:
+        if hurra is None:
+            hurra = PhotoImage(file="hurra.png")
+        hurra_background = Label(image=hurra)
+        hurra_background.place(x=920, y=400)
+
+
+save_button_image = Image.open("klik.png")  # Ścieżka do obrazka przycisku
+save_button_image = ImageTk.PhotoImage(save_button_image)
+save_button = Button(image=save_button_image, command=predict_stroke, borderwidth=0)
+save_button.image = save_button_image
+save_button.place(x=920, y=250)
+
+
+def refresh():
+    age_entry.delete(0, 'end')
+    bmi_entry.delete(0, 'end')
+    avg_g_entry.delete(0, 'end')
+
+    hypertenstion.set(0)
+    ever_married.set(0)
+    heart_disease.set(0)
+
+    gender_combobox.set('')
+    work_combobox.set('')
+    residence_combobox.set('')
+    smoking_combobox.set('')
+
+
+bmi_button = Button(text="Refresh", command=refresh, borderwidth=0)
+bmi_button.place(x=805, y=600)
 root.mainloop()
