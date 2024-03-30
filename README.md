@@ -6,4 +6,9 @@ The project involves predicting whether a person is at risk of stroke or not on 
 - XGBoost 
 
 Since the data is unbalanced I used the SMOTE method to make the percentage of each class contain the same number of results. 
-Libraries used: pandas, matplotlib, seaborn, sklearn, imblearn.
+Then I created a GUI to interactively check if a person is at risk.
+Libraries used: pandas, matplotlib, seaborn, sklearn, imblearn, tkinter, joblib, PIL.
+
+
+
+
