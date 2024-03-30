@@ -1,12 +1,12 @@
 import tkinter as tk
 from tkinter import *
-from tkinter import messagebox, filedialog
 from tkinter.ttk import Combobox
 from PIL import Image, ImageTk
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import joblib
 
+# design windows
 background = '#d9d9d9'
 framebg = '#5d9ad8'
 framefg = framebg
@@ -27,31 +27,13 @@ title = PhotoImage(file="title.png")
 title_background = Label(image=title, borderwidth=0, highlightthickness=0)
 title_background.place(x=40, y=10)
 
+# frame of details
 detail_entry = Frame(root, width=750, height=400, bg='#a6a6a6', bd=1)
 detail_entry.place(x=100, y=200)
 
 Label(detail_entry, text="Do you have hypertension?", font="halvetica 13", bg=framebg, fg='white').place(x=60, y=30)
 Label(detail_entry, text="Do you have heart disease?", font="halvetica 13", bg=framebg, fg='white').place(x=60, y=70)
 Label(detail_entry, text="Have you ever been married?", font="halvetica 13", bg=framebg, fg='white').place(x=60, y=110)
-
-
-def selection():
-    if hypertenstion.get() == 1:
-        hyp = 1
-        return hyp
-    elif hypertenstion.get() == 2:
-        hyp = 0
-        return hyp
-
-
-def selection2():
-    if heart_disease.get() == 1:
-        dis = 1
-        return (dis)
-    elif heart_disease.get() == 2:
-        dis = 0
-        return (dis)
-
 
 hypertenstion = IntVar()
 R1 = Radiobutton(detail_entry, text='Yes', variable=hypertenstion, value=1, command=selection)
@@ -70,17 +52,6 @@ R3 = Radiobutton(detail_entry, text='Yes', variable=ever_married, value=1, comma
 R4 = Radiobutton(detail_entry, text='No', variable=ever_married, value=2, command=selection)
 R3.place(x=330, y=110)
 R4.place(x=390, y=110)
-
-
-def selection5():
-    input = gender_combobox.get()
-    if input == "Male":
-        return 0
-    elif input == "Female":
-        return 1
-    elif input == "Other":
-        return 2
-
 
 Label(detail_entry, text="Gender", font='arial 13', bg=framebg, fg='white').place(x=60, y=150)
 Label(detail_entry, text="Work type", font='arial 13', bg=framebg, fg='white').place(x=60, y=190)
